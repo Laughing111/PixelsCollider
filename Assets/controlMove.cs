@@ -12,11 +12,19 @@ public class controlMove : MonoBehaviour {
     public bool canControl;
     private Vector2 old;
     private Vector2 current;
-	// Use this for initialization
-	void Start () {
+    Texture2D playerTe;
+    private int playerWidth;
+    private int playerHeight;
+    public ParticleSystem par;
+    // Use this for initialization
+    void Start () {
         rts = gameObject.GetComponent<RectTransform>();
         te = bg.texture as Texture2D;
-        
+        playerTe = (rts.GetComponent<RawImage>().texture) as Texture2D;
+        playerWidth =playerTe.width;
+        playerHeight = playerTe.height;
+        //Debug.Log(playerWidth+playerHeight);
+
     }
 	
 	// Update is called once per frame
@@ -27,18 +35,37 @@ public class controlMove : MonoBehaviour {
             if (Input.GetKey(KeyCode.W))
             {
                 rts.anchoredPosition += new Vector2(0, 1) * speed;
+                if(!par.isPlaying)
+                {
+                    par.Play();
+                }
+                
             }
             if (Input.GetKey(KeyCode.S))
             {
                 rts.anchoredPosition -= new Vector2(0, 1) * speed;
+                if (!par.isPlaying)
+                {
+                    par.Play();
+                }
             }
             if (Input.GetKey(KeyCode.A))
             {
                 rts.anchoredPosition -= new Vector2(1, 0) * speed;
+                rts.localScale = new Vector3(-1, 1, 1);
+                if (!par.isPlaying)
+                {
+                    par.Play();
+                }
             }
             if (Input.GetKey(KeyCode.D))
             {
                 rts.anchoredPosition += new Vector2(1, 0) * speed;
+                rts.localScale = new Vector3(1, 1, 1);
+                if (!par.isPlaying)
+                {
+                    par.Play();
+                }
             }
             
         }
@@ -54,35 +81,27 @@ public class controlMove : MonoBehaviour {
 
     private void PixelsDetected()
     {
-        int x;
-        int y;
-        Color color=te.GetPixel((int)rts.anchoredPosition.x, (int)rts.anchoredPosition.y);
-        if (color == new Color(0, 1, 0))
+        int rowStart =(int) rts.anchoredPosition.x - playerWidth / 2;
+        int columnStart = (int)rts.anchoredPosition.y - playerHeight / 2;
+        int rowEnd = (int)rts.anchoredPosition.x + playerWidth / 2;
+        int columnEnd = (int)rts.anchoredPosition.y + playerHeight / 2;
+        for(int row=rowStart;row<=rowEnd;row++)
         {
-            canControl = false;
-            //while (true)
-            //{
-            //    float r = 1.5f;
-            //    for (int i = 0; i < 359; i++)
-            //    {
-            //        x = (int)(Mathf.Cos(i) * r + rts.anchoredPosition.x);
-            //        y = (int)(Mathf.Sin(i) * r + rts.anchoredPosition.y);
-            //        if (te.GetPixel(x, y) != new Color(0, 1, 0))
-            //        {
-            //            rts.anchoredPosition = new Vector2(x, y);
-            //            canControl = true;
-            //            return;
-            //        }
-            //    }
-            //    r += 0.5f;
-            //} 
-            rts.anchoredPosition = old;
+            for(int column= columnStart;column<= columnEnd;column++)
+            {
+                Color color = te.GetPixel(row, column);
+                if (color.a >0)
+                {
+                    if (color == new Color(0, 1, 0))
+                    {
+                        canControl = false;
+                        rts.anchoredPosition = old;
+                        return;
+                    }
+                }
+                
+            }
         }
-        else
-        {
-            canControl = true;
-        }
-
-        
+        canControl = true;
     }
 }
