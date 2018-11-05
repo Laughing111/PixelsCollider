@@ -14,39 +14,55 @@ public class ControlAngie : MonoBehaviour {
 	void Update () {
 		 if(Input.GetKey(KeyCode.A))
         {
-            play(true);
+            play(1);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            play(true);
+            play(4);
         }
         else if(Input.GetKey(KeyCode.W))
         {
-            play(true);
+            play(3);
         }
         else if(Input.GetKey(KeyCode.D))
         {
-            play(true);
+            play(1);
+        }
+         else if(Input.GetKey(KeyCode.F))
+        {
+            play(5);
         }
         else
         {
-            play(false);
+            play(2);
         }
 
 
     }
 
 
-    public void play(bool isWalk)
+    public void play(int isWalk)
     {
-        if(isWalk)
+        if(isWalk==1)
         {
             anim.Play("Run");
         }
-        else
+        else if(isWalk==2)
         {
 
             anim.Play("Idle");
+        }
+        else if(isWalk==3)
+        {
+            anim.Play("Jump");
+        }
+        else if(isWalk==4)
+        {
+            anim.Play("Flinch");
+        }
+        else if(isWalk==5)
+        {
+            anim.Play("Death");
         }
         
     }

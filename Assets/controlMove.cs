@@ -8,7 +8,7 @@ public class controlMove : MonoBehaviour {
     private RectTransform rts;
     public float speed = 2.0f;
     public RawImage bg;
-    private Texture2D te;
+    public RenderTexture te;
     public bool canControl;
     private Vector2 old;
     private Vector2 current;
@@ -19,11 +19,12 @@ public class controlMove : MonoBehaviour {
     // Use this for initialization
     void Start () {
         rts = gameObject.GetComponent<RectTransform>();
-        te = bg.texture as Texture2D;
+        //te = bg.texture as Texture2D;
         playerTe = (rts.GetComponent<RawImage>().texture) as Texture2D;
         playerWidth =playerTe.width;
         playerHeight = playerTe.height;
         //Debug.Log(playerWidth+playerHeight);
+        
 
     }
 	
@@ -81,6 +82,11 @@ public class controlMove : MonoBehaviour {
 
     private void PixelsDetected()
     {
+        
+        RenderTexture.active = te;
+        Texture2D tee = new Texture2D(te.width, te.height, TextureFormat.ARGB32, false);
+        tee.ReadPixels(new Rect(0, 0, te.width, te.height), 0, 0);
+        tee.Apply();
         int rowStart =(int) rts.anchoredPosition.x - playerWidth / 2;
         int columnStart = (int)rts.anchoredPosition.y - playerHeight / 2;
         int rowEnd = (int)rts.anchoredPosition.x + playerWidth / 2;
@@ -89,7 +95,7 @@ public class controlMove : MonoBehaviour {
         {
             for(int column= columnStart;column<= columnEnd;column++)
             {
-                Color color = te.GetPixel(row, column);
+                Color color = tee.GetPixel(row, column);
                 if (color.a >0)
                 {
                     if (color == new Color(0, 1, 0))
@@ -103,5 +109,6 @@ public class controlMove : MonoBehaviour {
             }
         }
         canControl = true;
+       Destroy(tee);
     }
 }

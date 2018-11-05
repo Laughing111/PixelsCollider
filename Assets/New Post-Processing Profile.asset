@@ -14,9 +14,9 @@ MonoBehaviour:
   debugViews:
     m_Enabled: 1
     m_Settings:
-      mode: 0
+      mode: 2
       depth:
-        scale: 1
+        scale: 0
       motionVectors:
         sourceOpacity: 1
         motionImageOpacity: 0
@@ -71,10 +71,10 @@ MonoBehaviour:
   depthOfField:
     m_Enabled: 1
     m_Settings:
-      focusDistance: 10
-      aperture: 5.6
-      focalLength: 50
-      useCameraFov: 0
+      focusDistance: 79.53
+      aperture: 0.1
+      focalLength: 143
+      useCameraFov: 1
       kernelSize: 1
   motionBlur:
     m_Enabled: 0
@@ -102,8 +102,8 @@ MonoBehaviour:
       bloom:
         intensity: 1.85
         threshold: 1.07
-        softKnee: 0.5
-        radius: 4
+        softKnee: 0.411
+        radius: 3.35
         antiFlicker: 0
       lensDirt:
         texture: {fileID: 0}
